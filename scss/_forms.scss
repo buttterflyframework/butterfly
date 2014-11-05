@@ -1,0 +1,142 @@
+/*
+
+	ButterflyJS
+	Ultimate JavaScript front-end library
+
+	Version 1.0
+
+	File: _forms.scss
+
+	Developed by Semir Babajić
+
+*/
+
+input[type="text"], input[type="password"], input[type="radio"], input[type="checkbox"], textarea {
+    @include box-sizing(border-box);
+}
+
+form {
+    display: block;
+    margin-bottom: $cell-padding-top;
+    label {
+        &.radio, &.checkbox {
+            font-weight: normal;
+        }
+        &.disabled {
+            color: $font-color-brightest;
+        }
+        &.inline {
+            display: inline;
+            width: auto;
+        }
+        display: block;
+        font-weight: bold;
+        width: 100%;
+        line-height: $line-height-base;
+        padding-bottom: 2px;
+        input[type="checkbox"], input[type="radio"] {
+            position: relative;
+            top: 2px;
+            margin-right: 5px;
+        }
+        cursor: pointer;
+    }
+    input[type="text"], input[type="password"], textarea {
+        width: 100%;
+        margin: 0;
+    }
+    select {
+        width: 100%;
+        margin: 0;
+    }
+    input.block:last-child, textarea.block:last-child {
+        margin-bottom: 0;
+    }
+}
+
+form.vertical, form.horizontal {
+    row, div.row {
+        > div.cell, cell {
+            padding-top: $cell-padding-top / 1.5;
+            padding-bottom: $cell-padding-top / 2;
+        }
+    }
+}
+
+form.horizontal {
+    row, div.row {
+        > div.cell, cell {
+            &:first-child {
+                label {
+                    text-align: right;
+                    line-height: $line-height-base;
+                    padding-top: $cell-padding-top - 2;
+                    padding-bottom: 0;
+                }
+                padding-right: 0;
+            }
+        }
+        > div.cell.block, cell.block {
+            &:first-child {
+                label {
+                    text-align: left;
+                }
+                padding-right: auto;
+                padding-top: 2px;
+                padding-bottom: 0;
+            }
+        }
+    }
+}
+
+textarea.fixed {
+    resize: none;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+    &.disabled, &.readonly {
+        color: $font-color-brightest;
+        background: lighten($font-color-brightest, 36);
+        option {
+            color: $font-color-brightest;
+        }
+    }
+    &:focus {
+        border: 1px solid map-get($base-colors-bg, default);
+        @include box-shadow(0, 0, 2px, lighten(map-get($base-colors-bg, default), 20));
+    }
+    border: 1px solid $border-color;
+    background: $code-box-bg-color;
+    @include box-shadow(-1px, 0, 2px, lighten($font-color-brightest, 35), "inset");
+    padding: $cell-padding-top $cell-padding-left / 2;
+}
+
+input.block, textarea.block {
+    width: 100%;
+    display: block;
+    margin-bottom: $cell-padding-top;
+}
+
+select {
+    outline: none;
+    display: inline-block;
+    line-height: $line-height-base;
+    padding: $cell-padding-top / 1.5 $cell-padding-left / 2;
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    @if $color-name != neutral and $color-name != default {
+        input[type="text"].#{$color-name}, input[type="password"].#{$color-name}, textarea.#{$color-name}, select.#{$color-name} {
+            border: 1px solid $color-value;
+            color: darken($color-value, 20);
+            &:focus {
+                @if $color-name == "info" {
+                    @include box-shadow(0, 0, 2px, $color-value);
+                }
+                @else {
+                    @include box-shadow(0, 0, 2px, lighten($color-value, 20));
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+/*
+	
+	ButterflyJS
+	Ultimate JavaScript front-end library
+
+	Version 1.0
+
+	File: _variables.scss
+
+	Developed by Semir Babajić
+
+	---
+	IMPORTANT NOTE: Do not change selector declarations in this file.
+
+*/
+
+body container, body div.container {
+    margin: 0 auto;
+    width: $page-width-default;
+}
+
+body.wide container, body.wide div.container {
+    width: $page-width-wide;
+}
+
+body.mobile container, body.mobile div.container {
+    width: $page-width-mobile;
+}
+
+body.stretch container, body.stretch div.container {
+    width: 100%;
+}
+
+container.stretch, div.container.stretch {
+    width: 100%;
+}
+
+.hline {
+    border-bottom: 1px solid $border-color;
+}
+
+body.debug * {
+    border: 1px dotted #FFAA00 !important;
+}

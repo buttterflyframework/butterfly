@@ -1,0 +1,48 @@
+/*
+
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _grid.scss
+
+    Developed by Semir Babajić
+
+*/
+
+div.row, row {
+    display: block;
+    position: relative;
+    font-size: 0;
+    @include box-sizing(border-box);
+    > .cell {
+        font-size: $font-size-base;
+        display: inline-block;
+        width: 1 / $cell-total-count * 100%;
+        vertical-align: top;
+        @include box-sizing(border-box);
+        padding: $cell-padding-top $cell-padding-left;
+        div.row, row {
+            margin-left: -$cell-padding-left;
+            margin-right: -$cell-padding-left;
+        }
+    }
+    // Outputs pre-calculated sizes for N responsive cells
+    @for $i from 1 through $cell-total-count {
+        > .cell.c#{$i}, > cell.c#{$i} {
+            width: $i / $cell-total-count * 100%;
+            margin: 0;
+        }
+    }
+    // Output pre-calculated margin sizes for responsive cells
+    @for $i from 1 through $cell-total-count {
+        > .cell.m#{$i}, > cell.m#{$i} {
+            margin-left: $i / $cell-total-count * 100%;
+        }
+    }
+    > .cell.block {
+        width: 100%;
+        margin-left: 0;
+    }
+}

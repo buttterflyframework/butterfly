@@ -1,0 +1,133 @@
+/*
+
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _dialogs.scss
+
+    Developed by Semir Babajić
+
+*/
+
+.overlay {
+    background: $dialog-overlay-bg-color;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: $z-index-overlay;
+}
+
+/* @each $color-name, $color-value in $base-colors-bg {
+    .overlay.#{$color-name} {
+        background: darken(rgba($color-value, 0.75), 35);
+    }
+} */
+
+.dialog.modal {
+    z-index: $z-index-dialog-modal;
+}
+
+.dialog {
+    @include opacity(0.95);
+    display: none;
+    position: fixed;
+    width: $dialog-initial-width;
+    background: white;
+    outline: 0;
+    cursor: default;
+    z-index: $z-index-dialog;
+    @include box-shadow(0, 0, $dialog-shadow-size, rgba($dialog-shadow-color, 0.1));
+    .header {
+        @include prevent-selection;
+        .button-group {
+            float: right;
+            button, .button, input[type="submit"] {
+                margin-bottom: 0px;
+                float: right;
+                margin-right: -1px;
+                margin-left: 1px;
+                @include border-radius(0);
+                border: 0 none;
+                font-weight: bold;
+                font-size: $font-size-large;
+                &:first-child {
+                    margin-right: 0px;
+                }
+            }
+            .dismiss {
+                &:after {
+                    content: "\D7";
+                }
+            }
+        }
+        border-bottom: 1px solid $border-color;
+        h1 {
+            display: inline-block;
+            padding: $cell-padding-top $cell-padding-left;
+            margin: 0;
+            font-size: $h4-font-size;
+            color: $font-color-brightest;
+        }
+    }
+    .content {
+        padding: $cell-padding-top $cell-padding-left;
+        border-bottom: 1px solid $border-color;
+        @include box-shadow(0, 0, $cell-padding-top / 2, lighten($boxes-shadow-color, 10), "inset");
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    .footer {
+        @include prevent-selection;
+        @include box-sizing(border-box);
+        > div {
+            display: inline-block;
+        }
+        .message {
+            padding: $cell-padding-top $cell-padding-left;
+            span {
+                color: $font-color-brightest;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+        .button-group {
+            float: right;
+            margin-top: -1px;
+            button, .button, input[type="submit"] {
+                margin-bottom: 0px;
+                float: right;
+                margin-right: -1px;
+                margin-left: 1px;
+                border: 0 none;
+                @include border-radius(0);
+                &:first-child {
+                    margin-right: 0px;
+                }
+            }
+        }
+    }
+}
+
+.dialog.focus, .dialog.modal {
+    .header > h1 {
+        color: map-get($base-colors-bg, default);
+    }
+    @include box-shadow(0, 0, $dialog-shadow-size, $dialog-shadow-color);
+    @include opacity(1);
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    .dialog.focus.#{$color-name} {
+        .header > h1 {
+            color: $color-value;
+        }
+    }
+}

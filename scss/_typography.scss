@@ -1,0 +1,297 @@
+/*
+    
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _typography.scss
+
+    Developed by Semir Babajić
+
+*/
+
+html *, body * {
+    font-family: $font-family;
+    font-size: $font-size-base;
+    color: $font-color-base;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headings-font-family;
+    color: $headings-font-color;
+    line-height: $headings-line-height;
+    display: block;
+}
+
+h1 {
+    padding-top: $line-height-calculated;
+    padding-bottom: $line-height-calculated / 2;
+    font-size: $h1-font-size;
+}
+
+h2 {
+    padding-top: $line-height-calculated * 0.9;
+    padding-bottom: $line-height-calculated * 0.9 / 2;
+    font-size: $h2-font-size;
+}
+
+h3 {
+    padding-top: $line-height-calculated * 0.8;
+    padding-bottom: $line-height-calculated * 0.8 / 2;
+    font-size: $h3-font-size;
+}
+
+h4 {
+    padding-top: $line-height-calculated * 0.6;
+    padding-bottom: $line-height-calculated * 0.6 / 2;
+    font-size: $h4-font-size;
+}
+
+h5 {
+    padding-top: $line-height-calculated * 0.5;
+    padding-bottom: $line-height-calculated * 0.5 / 2;
+    font-size: $h5-font-size;
+}
+
+h6 {
+    padding-top: $line-height-calculated * 0.3;
+    padding-bottom: $line-height-calculated * 0.3 / 2;
+    font-size: $h6-font-size;
+}
+
+.h1 {
+    font-size: $h1-font-size;
+}
+
+.h2 {
+    font-size: $h2-font-size;
+}
+
+.h3 {
+    font-size: $h3-font-size;
+}
+
+.h4 {
+    font-size: $h4-font-size;
+}
+
+.h5 {
+    font-size: $h5-font-size;
+}
+
+.h6 {
+    font-size: $h6-font-size;
+}
+
+p {
+    line-height: $line-height-base;
+    margin-bottom: $line-height-calculated / 2;
+}
+
+a, a:visited {
+    text-decoration: none;
+    outline: none;
+    color: map-get($base-colors-bg, default);
+    font-size: inherit;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.dock-right {
+    float: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-justify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.transform-uppercase {
+    text-transform: uppercase;
+}
+
+.transform-lowercase {
+    text-transform: lowercase;
+}
+
+.transform-capitalize {
+    text-transform: capitalize;
+}
+
+b, strong {
+    font-weight: bold;
+}
+
+em, i {
+    font-style: italic;
+}
+
+s, del {
+    text-decoration: line-through;
+}
+
+o {
+    text-decoration: overline;
+}
+
+u, ins {
+    text-decoration: underline;
+}
+
+ul, ol {
+    margin-bottom: $cell-padding-top;
+    padding-left: $cell-padding-left * 2;
+    line-height: $line-height-base;
+    li {
+        padding-bottom: $cell-padding-top / 2;
+    }
+}
+
+small {
+    font-size: $font-size-small;
+}
+
+address {
+    line-height: $line-height-base;
+    margin-bottom: $cell-padding-top;
+    font-style: normal;
+}
+
+row, div.row {
+    ul, ol {
+        margin-bottom: $cell-padding-top;
+        padding-left: $cell-padding-left * 2.5;
+    }
+}
+
+ul {
+    list-style-type: square;
+}
+
+ul.list-plain {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul.circle {
+    list-style-type: circle;
+}
+
+ul.disc {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ol.roman {
+    list-style-type: upper-roman;
+}
+
+ol.latin {
+    list-style-type: upper-latin;
+}
+
+ol.alpha {
+    list-style-type: upper-alpha;
+}
+
+ol.roman-lower {
+    list-style-type: lower-roman;
+}
+
+ol.latin-lower {
+    list-style-type: lower-latin;
+}
+
+ol.alpha-lower {
+    list-style-type: lower-alpha;
+}
+
+blockquote {
+    display: block;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAABCAIAAABsYngUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3goaDx0hKa1D2gAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAPSURBVAjXY3z69CkDNgAAPesCsZKoQ6gAAAAASUVORK5CYII=) repeat-y left top;
+    padding: $cell-padding-top * 1.25 $cell-padding-left * 1.5;
+    p {
+        font-size: $font-size-large;
+    }
+    p:last-child {
+        margin-bottom: 0;
+    }
+    footer:before {
+        content: "— ";
+    }
+    footer, footer * {
+        color: $font-color-brightest;
+    }
+    margin-bottom: $cell-padding-top;
+}
+
+pre, xmp {
+    display: block;
+    padding: 9.5px;
+    margin: 0px 0px 10px;
+    font-size: 13px;
+    line-height: 1.42857;
+    color: $font-color-base;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: $code-box-bg-color;
+    border: 1px solid $border-color;
+}
+
+code {
+    color: $font-color-base;
+    font-family: $font-family-code;
+    background: $code-box-bg-color;
+    @include box-shadow(0, 0, $cell-padding-top / 2, $boxes-shadow-color);
+    padding: 0px 5px;
+    font-size: inherit;
+}
+
+.script {
+    font-family: $font-family-code;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+p code {
+    position: relative;
+    top: -1px;
+}
+
+pre code, xmp code {
+    @include box-shadow(0, 0, 0, 0);
+    padding: 0px;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0px;
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    .#{$color-name}-fc {
+        color: $color-value;
+    }
+    .#{$color-name}-bg {
+        background-color: $color-value;
+        color: map-get($base-colors-fc, $color-name);
+    }
+}

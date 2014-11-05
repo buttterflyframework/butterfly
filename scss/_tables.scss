@@ -1,0 +1,53 @@
+/*
+
+	ButterflyJS
+	Ultimate JavaScript front-end library
+
+	Version 1.0
+
+	File: _tables.scss
+
+	Developed by Semir Babajić
+
+*/
+
+table, .table {
+    width: 100%;
+    max-width: 100%;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border: 1px solid $border-color;
+    > thead > tr > th, > tbody > tr > th, > tfoot > tr > th, > thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+        padding: $cell-padding-top $cell-padding-left;
+        line-height: $line-height-base;
+        vertical-align: top;
+        border: 1px solid $border-color;
+        text-align: left;
+    }
+    > thead > tr > th {
+        font-weight: bold;
+    }
+}
+
+.responsive-table-wrap {
+    overflow-x: auto;
+}
+
+table.box, .table.box.table-box {
+    border: 1px solid darken($border-color, 5);
+    > thead > tr > th, > tbody > tr > th, > tfoot > tr > th, > thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+        border: 1px solid darken($border-color, 5);
+    }
+    > thead > tr, > tfoot > tr {
+        background: darken($code-box-bg-color, 10);
+    }
+    > tbody > tr:nth-child(even) {
+        background: darken($code-box-bg-color, 5);
+    }
+}
+
+table.hover-rows, .table.hover-rows {
+    tbody > tr:hover {
+        background: lighten(map-get($base-colors-bg, default), 55);
+    }
+}

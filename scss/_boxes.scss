@@ -1,0 +1,179 @@
+/*
+
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _boxes.scss
+
+    Developed by Semir Babajić
+
+*/
+
+.box {
+    border: 1px solid $border-color;
+    padding: $cell-padding-top $cell-padding-left;
+    background-color: $code-box-bg-color;
+    @include box-shadow(0, 0, $cell-padding-top / 1.5, lighten($boxes-shadow-color, 7));
+    margin-bottom: $cell-padding-top;
+    .box:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.frame-box {
+    > p.title {
+        margin-left: -$cell-padding-left + 3;
+        margin-right: -$cell-padding-left + 3;
+        margin-top: -$cell-padding-top + 3;
+        margin-bottom: $cell-padding-top;
+        padding: $cell-padding-top - 3 $cell-padding-left - 3;
+        font-weight: bold;
+        border: 1px solid $border-color;
+        background: darken($code-box-bg-color, 5);
+    }
+    color: $font-color-brightest;
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    @if $color-name != neutral and $color-name != default {
+        .frame-box.#{$color-name} > p.title {
+            @if $color-name != info {
+                color: lighten($color-value, 5);
+                border: 1px solid lighten($color-value, 20);
+                background: lighten($color-value, 30);
+            }
+            @else {
+                color: lighten($color-value, 1);
+                border: 1px solid lighten($color-value, 1);
+                background: lighten($color-value, 20);
+            }
+        }
+    }
+}
+
+.toc-box {
+    ul {
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    li {
+        display: block;
+        margin-bottom: $cell-padding-top / 2;
+    }
+    li a {
+        display: block;
+        color: $font-color-brightest;
+    }
+    li ul.sub-list {
+        margin-left: $cell-padding-left;
+        margin-top: $cell-padding-top;
+        margin-bottom: 0;
+        display: none;
+    }
+    li ul.force-visible {
+        display: block !important;
+    }
+    li.actual {
+        ul.sub-list {
+            display: block;
+        }
+        > a:first-child {
+            font-weight: bold;
+            color: map-get($base-colors-bg, default);
+        }
+    }
+    li a.actual {
+        font-weight: bold;
+        color: map-get($base-colors-bg, default);
+        margin-bottom: 0;
+    }
+    li a:hover {
+        text-decoration: none;
+    }
+    li:last-child {
+        margin-bottom: 0;
+    }
+    border-top-color: map-get($base-colors-bg, default);
+    border-bottom-color: map-get($base-colors-bg, default);
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    .toc-box.#{$color-name} {
+        border-top-color: $color-value;
+        border-bottom-color: $color-value;
+        li a.actual, li.actual > a:first-child {
+            color: $color-value;
+        }
+    }
+}
+
+.code-box {
+    color: $font-color-base;
+    pre {
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        word-break: normal;
+        white-space: nowrap;
+        background-color: transparent;
+        border: 0 none;
+        code {
+            @include box-shadow(0, 0, 0, 0);
+        }
+    }
+    .preview {
+        padding: $cell-padding-top $cell-padding-left;
+        margin: $cell-padding-top (-$cell-padding-left) (-$cell-padding-top) (-$cell-padding-left);
+        border-top: 1px solid $border-color;
+        background: darken($code-box-bg-color, 2);
+        @include box-shadow(0, 0, $cell-padding-top / 1.5, lighten($boxes-shadow-color, 10), "inset");
+    }
+}
+
+.attention-box {
+    padding: $attention-box-padding;
+    margin: $attention-box-margin;
+    border-width: $attention-box-border-settings;
+    border-color: $border-color;
+    border-style: solid;
+    border-image: none;
+    border-bottom-color: map-get($base-colors-bg, default);
+    background: $attention-box-bg-color;
+    h2 {
+        margin-top: 0;
+        padding-top: 0;
+        font-size: $h5-font-size;
+        color: map-get($base-colors-bg, default);
+    }
+    p {
+        margin-bottom: 0;
+    }
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    .attention-box.#{$color-name} {
+        border-bottom-color: $color-value;
+        h2 {
+            color: $color-value;
+        }
+    }
+}
+
+div.loader-progress {
+    background: $loading-overlay-bg-color;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: $z-index-overlay;
+    display: none;
+    div.progress {
+        position: relative;
+        height: 2px;
+        background: map-get($base-colors-bg, critical);
+        @include box-shadow(0, 0, 2px, lighten(map-get($base-colors-bg, critical), 10));
+        width: 0px;
+    }
+}

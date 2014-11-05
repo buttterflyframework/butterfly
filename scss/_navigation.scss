@@ -1,0 +1,80 @@
+/*
+    
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _navigation.scss
+
+    Developed by Semir Babajić
+
+*/
+
+header.navigation, ul.navigation {
+    list-style: none;
+    font-size: 0;
+    background: rgba(255, 255, 255, 0.99);
+    padding: 0;
+    z-index: $z-index-navigation;
+    position: relative;
+    @include box-shadow(0, 0, 10px, rgba(0, 0, 0, 0.1));
+    li {
+        display: inline-block;
+        padding: 0;
+    }
+    li a {
+        font-size: $font-size-base;
+        padding: $cell-padding-top * 1.5 $cell-padding-left;
+        display: block;
+        color: $font-color-base;
+    }
+    li a:hover {
+        background: $navigation-pill-hover-color;
+        text-decoration: none;
+    }
+    li.logo, li.logo a {
+        font-weight: bold;
+    }
+    li.logo a:hover {
+        background: transparent;
+    }
+    li.block {
+        display: block;
+        float: none;
+    }
+    li div.touch-expand {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        float: right;
+        position: relative;
+        top: -32px - $cell-padding-top / 2 - 1 - $line-height-base * 2;
+        left: -$cell-padding-left;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeChcSCiZU3roRAAAAMklEQVRIx2NgGPKAcd5pygxgYTChzAAmSr0w8AawMJxhGAWjKXE0JY6mxNGUOJoSYQAAZ44HafQ1BTMAAAAASUVORK5CYII=);
+        cursor: pointer;
+    }
+    li a.active {
+        background: $navigation-pill-active-color;
+    }
+}
+
+header.navigation.fixed, ul.navigation.fixed {
+    position: fixed;
+}
+
+header.navigation.fixed {
+    left: 0;
+    right: 0;
+    top: 0;
+    height: auto;
+}
+
+header.navigation.fixed.mobile-view, ul.navigation.fixed.mobile-view {
+    position: relative;
+}
+
+header.navigation ul {
+    @include box-shadow(0, 0, 0px, rgba(0, 0, 0, 0.2));
+    margin-bottom: 0;
+}

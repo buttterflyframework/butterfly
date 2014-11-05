@@ -1,0 +1,138 @@
+/*
+    
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    Version 1.0
+
+    File: _buttons.scss
+
+    Developed by Semir Babajić
+
+*/
+
+button, a.button, input[type="submit"] {
+    background: map-get($base-colors-bg, default);
+    color: map-get($base-colors-fc, default);
+    cursor: pointer;
+    display: inline-block;
+    line-height: $line-height-base;
+    text-align: center;
+    text-transform: none;
+    vertical-align: middle;
+    border: 1px solid darken(map-get($base-colors-bg, default), 10);
+    box-sizing: initial;
+    margin: 0 $button-margin $button-margin 0;
+    text-overlfow: elipsis;
+    z-index: $z-index-buttons;
+    position: relative;
+    outline: none;
+    padding: $cell-padding-top $cell-padding-left;
+    @include prevent-selection;
+    * {
+        color: map-get($base-colors-fc, default);
+    }
+    @include border-radius(4px);
+    font-size: $font-size-base;
+}
+
+button:hover, a.button:hover, input[type="submit"]:hover {
+    background: lighten(map-get($base-colors-bg, default), 2);
+    @include box-shadow(0, 0, $cell-padding-top, lighten(map-get($base-colors-bg, default), 10), "inset");
+    z-index: $z-index-buttons + 1;
+    &.disabled {
+        background: lighten(map-get($base-colors-bg, default), 2);
+        @include box-shadow(0, 0, 0, 0);
+    }
+    text-decoration: none;
+}
+
+button:active, a.button:active, input[type="submit"]:active, .button.active {
+    background: darken(map-get($base-colors-bg, default), 2);
+    @include box-shadow(0, 0, $cell-padding-top, darken(map-get($base-colors-bg, default), 10), "inset");
+    border: 1px solid darken(map-get($base-colors-bg, default), 10);
+    z-index: $z-index-buttons + 1;
+    &.disabled {
+        background: darken(map-get($base-colors-bg, default), 2);
+        @include box-shadow(0, 0, 0, 0);
+    }
+}
+
+button.large, a.button.large, input[type="submit"].large {
+    padding: $cell-padding-top * 1.5 $cell-padding-left * 1.5;
+    font-size: $font-size-base * 1.5;
+    margin: 0 $button-margin * 1.5 $button-margin * 1.5 0;
+}
+
+button.small, a.button.small, input[type="submit"].small {
+    padding: $cell-padding-top * 0.75 $cell-padding-left * 0.75;
+    font-size: $font-size-base * 0.75;
+    margin: 0 $button-margin * 0.75 $button-margin * 0.75 0;
+}
+
+@each $color-name, $color-value in $base-colors-bg {
+    button.#{$color-name}, a.button.#{$color-name}, input[type="submit"].#{$color-name} {
+        color: map-get($base-colors-fc, $color-name);
+        background: $color-value;
+        border: 1px solid darken($color-value, 5);
+        z-index: $z-index-buttons;
+        * {
+            color: map-get($base-colors-fc, $color-name);
+        }
+    }
+    button.#{$color-name}:hover, a.button.#{$color-name}:hover, input[type="submit"].#{$color-name}:hover {
+        background: lighten($color-value, 2);
+        @include box-shadow(0, 0, $cell-padding-top, lighten($color-value, 10), "inset");
+        z-index: $z-index-buttons + 1;
+        &.disabled {
+            background: $color-value;
+            @include box-shadow(0, 0, 0, 0);
+        }
+    }
+    button.#{$color-name}:active, a.button.#{$color-name}:active, input[type="submit"].#{$color-name}:active {
+        background: darken($color-value, 2);
+        @include box-shadow(0, 0, $cell-padding-top, darken($color-value, 10), "inset");
+        border: 1px solid darken($color-value, 10);
+        z-index: $z-index-buttons + 1;
+        &.disabled {
+            background: $color-value;
+            @include box-shadow(0, 0, 0, 0);
+        }
+    }
+}
+
+button.link, a.button.link {
+    background: transparent;
+    border: 0 none;
+    color: map-get($base-colors-bg, default);
+    @include box-shadow(0, 0, 0, 0);
+    @include border-radius(0);
+    &:hover, &:active {
+        background: transparent;
+        text-decoration: underline;
+        @include box-shadow(0, 0, 0, 0);
+    }
+    &:active, &:focus {
+        outline: 1px dotted;
+        border: 0 none;
+    }
+    @each $color-name, $color-value in $base-colors-bg {
+        &.#{$color-name} {
+            color: $color-value;
+        }
+    }
+    &.neutral {
+        color: $font-color-brightest;
+    }
+}
+
+button.block, a.button.block {
+    display: block;
+    @include box-sizing(border-box);
+    width: 100%;
+    margin-right: 0;
+}
+
+button.disabled {
+    @include opacity(0.6);
+}

@@ -1,0 +1,98 @@
+/*
+	
+	ButterflyJS
+	Ultimate JavaScript front-end library
+
+	Version 1.0
+
+	File: _variables.scss
+
+	Developed by Semir Babajić
+
+*/
+
+// Common variables
+$z-index-base: 10;
+$z-index-buttons: $z-index-base * 10;
+$z-index-navigation: $z-index-base * 100;
+$z-index-dialog: $z-index-base * 2000;
+$z-index-overlay: $z-index-base * 2900;
+$z-index-menu: $z-index-base * 3000;
+$z-index-dialog-modal: $z-index-base * 5000;
+
+// Layout variables
+$page-width-wide: 1280px;
+$page-width-default: 960px;
+$page-width-mobile: 640px;
+$border-color: rgba(220, 220, 220, 1);
+
+// Responsive grid variables
+$cell-total-count: 12;
+
+// Butterfly-wide padding settings
+$cell-padding-top: 10px;
+$cell-padding-left: 15px;
+
+// Typography variables
+$font-family: "Arial", "Helvetica", "Sans-Serif";
+$font-family-code: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+$font-size-base: 14px;
+$font-size-small: floor($font-size-base * 0.95);
+$font-size-large: floor($font-size-base * 1.15);
+
+$font-color-base: rgba(64, 64, 64, 1);
+$font-color-bright: lighten($font-color-base, 10);
+$font-color-brighter: lighten($font-color-base, 20);
+$font-color-brightest: lighten($font-color-base, 30);
+$font-color-dark: darken($font-color-base, 10);
+$font-color-darker: darken($font-color-base, 20);
+$font-color-darkest: darken($font-color-base, 30);
+
+$line-height-base: 20 / 14;
+$line-height-calculated: floor($line-height-base * $font-size-base);
+
+$headings-font-family: Arial, Helvetica, Sans-Serif;
+$headings-font-color: rgba(32, 32, 32, 1);
+$headings-line-height: 1.3;
+
+$h1-font-size: floor($font-size-base * 3);
+$h2-font-size: floor($font-size-base * 2.5);
+$h3-font-size: floor($font-size-base * 2);
+$h4-font-size: floor($font-size-base * 1.75);
+$h5-font-size: floor($font-size-base * 1.5);
+$h6-font-size: floor($font-size-base * 1.25);
+
+// Navigation variables
+$navigation-margin-bottom: 20px;
+$navigation-pill-hover-color: rgba(240, 240, 240, 1);
+$navigation-pill-active-color: rgba(240, 240, 240, 1);
+
+// Contextual color table
+$base-colors-bg: (critical: #DB043D, warning: #F29F04, default: #048AC9, info: #87CEFA, success: #03BC6C, neutral: $border-color);
+$base-colors-fc: (critical: #FAFAFA, warning: #FAFAFA, default: #FAFAFA, info: #FAFAFA, success: #FAFAFA, neutral: $font-color-bright);
+
+// Buttons variables
+$button-margin: 5px;
+
+// Boxes variables
+$code-box-padding: 9px 12px;
+$code-box-margin-bottom: 12px;
+$code-box-bg-color: #F9F9F9;
+$boxes-shadow-color: rgba(205, 205, 205, 1);
+
+$attention-box-padding: 20px;
+$attention-box-margin: 20px 0px;
+$attention-box-border-settings: 1px 1px 1px 1px;
+$attention-box-bg-color: #F9F9F9;
+
+$loading-overlay-bg-color: rgba(255, 255, 255, 0.85);
+
+// Dialog variables
+$dialog-overlay-bg-color: rgba(255, 255, 255, 0.85);
+$dialog-shadow-size: 20px;
+$dialog-initial-width: 620px;
+$dialog-shadow-color: rgba(0, 0, 0, 0.3);
+
+// Billboard variables
+$billboard-padding-top: 30px;
