@@ -10,8 +10,14 @@
 	Developed by Semir Babajić
 
 */
-(function($, w) {
 
+var Butterfly = function(element, options) {
+	this.element = element;
+	this.$element = $(element);
+	this.options = options || {};
+};
+
+(function($) {
 	/**
 	 * Internal helper and private functions
 	 *
@@ -115,25 +121,6 @@
 		},
 
 		/**
-		 * Generates alphanumeric ID
-		 *
-		 * @param  {integer} length Desired ID length
-		 * @return {string}         Alphanumeric ID
-		 */
-		uid: function(length) {
-			var allowed = 'abcdefghijklmnopqrstuvwxyz0123456789',
-				length = length || 5,
-				text = '',
-				i = 0;
-
-			for (i = 0; i < length; i++) {
-				text += allowed.charAt(Math.floor(Math.random() * allowed.length));
-			}
-
-			return text;
-		},
-
-		/**
 		 * Traverses the stylesheets on the document looking for the matched selector, then style.
 		 *
 		 * @author rlemon @ stackowerflow.com (original author)
@@ -222,7 +209,7 @@
 			resizeContainer: function(container) {
 				var targetDevice = $('body').attr('class'),
 					containerWidth = null,
-					viewportVidth = $(w).width(),
+					viewportVidth = $(window).width(),
 					mobileWidth = parseInt(_.css('width', 'body.mobile div.container'));
 
 				// Determine container optimal width based on user-defined preference
@@ -331,18 +318,24 @@
 		}
 	};
 
-	var Butterfly = function(element, options) {
-		this.element = element;
-		this.$element = $(element);
-		this.options = options || {};
-	};
-
 	/**
 	 * Prototype functions
 	 *
 	 * @type {object}
 	 */
 	Butterfly.prototype = {
+		/**
+		 * Current version number
+		 * @type {string}
+		 */
+		version: "1.0.1",
+
+		/**
+		 * Release version
+		 * @type {string}
+		 */
+		release: "beta",
+
 		/**
 		 * Default values
 		 * 
@@ -580,8 +573,6 @@
 					return;
 				}
 
-				console.log("Removing ", key);
-
 				// Delete expired item
 				this.storage.removeItem(key);
 			},
@@ -809,6 +800,31 @@
 
 					// Execute route if it was defined by the user
 					if (typeof routes[route] !== "undefined") {
+						if (routes[route] instanceof Butterfly.conventionRoute) {
+
+							// See if there's any user defined code that he needs to execute
+							// in router for this route
+							if (_.notNullOrEmpty(routes[route].callback) && _.isFunction(routes[route].callback)) {
+								routes[route].callback.call();
+							}
+
+							// This route is compliant to Butterfly's convention. Load matching
+							// controller.
+							Butterfly.modules([
+								_.format("js/controller/{0}Controller.js", route)
+							], function(controller) {
+								self.controller = controller;
+								if (
+									_.notNullOrEmpty(controller.destroy) && _.isFunction(controller.destroy)) {
+									self.dispose = controller.destroy;
+								}
+								self.controller.query = query;
+							});
+						} else {
+							// Retrieve dispose handler for current route
+							self.dispose = routes[route].call(self, query);
+						}
+
 						// Call lost handler on previously loaded route
 						if (self.current !== route && self.dispose && _.isFunction(self.dispose)) {
 							self.dispose.call(self, query);
@@ -821,9 +837,6 @@
 						var matchingNavPill = $('ul.navigation a[href="#' + route + '"]');
 						$('ul.navigation a').removeClass('active');
 						matchingNavPill.addClass('active');
-
-						// Retrieve dispose handler for current route
-						self.dispose = routes[route].call(self, query);
 
 						// Scroll to top
 						window.scrollTo(0, 0);
@@ -852,6 +865,15 @@
 					document.location.hash = route;
 				}
 			}
+		},
+
+		/**
+		 * [route description]
+		 * @param  {[type]} options [description]
+		 * @return {[type]}         [description]
+		 */
+		conventionRoute: function(callback) {
+			this.callback = callback;
 		},
 
 		/**
@@ -1077,7 +1099,7 @@
 		 * Events unbinding function (clears previously attached events)
 		 */
 		unbind: function() {
-			$(w).unbind('resize');
+			$(window).unbind('resize');
 		},
 
 		/**
@@ -1087,7 +1109,7 @@
 			var self = this;
 
 			// Bind resize event
-			$(w).bind('resize', function() {
+			$(window).bind('resize', function() {
 				_.internals.resize();
 			});
 		},
@@ -1108,19 +1130,20 @@
 	};
 
 	// Ensure Butterfly is in global scope
-	w.Butterfly = Butterfly;
-	w.Butterfly.cache = Butterfly.prototype.cache;
-	w.Butterfly.template = Butterfly.prototype.template;
-	w.Butterfly.router = Butterfly.prototype.router;
-	w.Butterfly.modules = Butterfly.prototype.modules;
-	w.Butterfly.property = Butterfly.prototype.property;
-	w.Butterfly.list = Butterfly.prototype.list;
-	w.Butterfly.model = Butterfly.prototype.model;
-	w.Butterfly.controller = Butterfly.prototype.controller;
-	w.Butterfly.defaults = Butterfly.prototype.defaults;
+	Butterfly = Butterfly;
+	Butterfly.cache = Butterfly.prototype.cache;
+	Butterfly.template = Butterfly.prototype.template;
+	Butterfly.router = Butterfly.prototype.router;
+	Butterfly.conventionRoute = Butterfly.prototype.conventionRoute;
+	Butterfly.modules = Butterfly.prototype.modules;
+	Butterfly.property = Butterfly.prototype.property;
+	Butterfly.list = Butterfly.prototype.list;
+	Butterfly.model = Butterfly.prototype.model;
+	Butterfly.controller = Butterfly.prototype.controller;
+	Butterfly.defaults = Butterfly.prototype.defaults;
 
 	// Callbacks
-	w.Butterfly.ready = function(callback) {
+	Butterfly.ready = function(callback) {
 		// Store user defined ready function to call it once initialized
 		Butterfly.prototype.runtime.callbacks['ready'] = callback;
 	};
@@ -1279,7 +1302,7 @@
 			},
 
 			percentage: function(percent, done) {
-				var viewportWidth = $(w).width();
+				var viewportWidth = $(window).width();
 
 				if (percent === 0) {
 					if (_.isFunction(done)) {
@@ -1661,4 +1684,4 @@
 		});
 	};
 
-})(jQuery, window);
+})(jQuery);
