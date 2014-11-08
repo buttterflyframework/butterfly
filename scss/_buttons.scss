@@ -32,7 +32,7 @@ button, a.button, input[type="submit"] {
     * {
         color: map-get($base-colors-fc, default);
     }
-    @include border-radius(4px);
+    @include border-radius($button-radius);
     font-size: $font-size-base;
 }
 
@@ -135,4 +135,53 @@ button.block, a.button.block {
 
 button.disabled {
     @include opacity(0.6);
+}
+
+.button-group {
+    font-size: 0;
+    position: relative;
+    button, a.button, input[type="submit"] {
+        margin-left: -1px;
+        margin-right: 0px;
+        @include border-radius(0);
+        &:first-child {
+            margin-left: 0;
+            @include border-top-left-radius($button-radius);
+            @include border-bottom-left-radius($button-radius);
+        }
+        &:last-child, &.dropdown {
+            @include border-top-right-radius($button-radius);
+            @include border-bottom-right-radius($button-radius);
+        }
+    }
+}
+
+.button-group.stack-vertical {
+    button, a.button, input[type="submit"] {
+        display: block;
+        margin: 0;
+        position: relative;
+        margin-top: -1px;
+        @include border-radius(0);
+        &:first-child {
+            @include border-top-left-radius($button-radius);
+            @include border-top-right-radius($button-radius);
+            margin-top: 0;
+        }
+        &:last-child {
+            @include border-bottom-left-radius($button-radius);
+            @include border-bottom-right-radius($button-radius);
+        }
+    }
+}
+
+.button-group.responsive {
+    display: table;
+    width: 100%;
+    button, a.button, input[type="submit"] {
+        @include box-sizing(border-box);
+        display: table-cell;
+        border-collapse: collapse;
+        margin-bottom: 0;
+    }
 }

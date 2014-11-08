@@ -328,7 +328,7 @@ var Butterfly = function(element, options) {
 		 * Current version number
 		 * @type {string}
 		 */
-		version: "1.0.1",
+		version: "1.0.2",
 
 		/**
 		 * Release version
