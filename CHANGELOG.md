@@ -7,6 +7,7 @@
 * Added an internal function for generating a unique alphanumeric identifiers
 * Corrected a bug in `Butterfly.router` where an improper data context was used when calling a `destroy` function on a `Butterfly.controller`
 
+## 1.0.3 beta (9th Nov 2014)
 * New CSS component – Dropdown menu
  * Currently fully supported only when placed within `ul.navigation`
  * Mobile friendly mode supported
