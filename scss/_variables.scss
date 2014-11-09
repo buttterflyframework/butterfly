@@ -3,8 +3,6 @@
 	ButterflyJS
 	Ultimate JavaScript front-end library
 
-	Version 1.0
-
 	File: _variables.scss
 
 	Developed by Semir Babajić
@@ -67,6 +65,10 @@ $h6-font-size: floor($font-size-base * 1.25);
 $navigation-margin-bottom: 20px;
 $navigation-pill-hover-color: rgba(240, 240, 240, 1);
 $navigation-pill-active-color: rgba(240, 240, 240, 1);
+
+// Dropdown menu variables
+$separator-color: lighten($border-color, 6);
+$separator-margin: 5px;
 
 // Contextual color table
 $base-colors-bg: (critical: #DB043D, warning: #F29F04, default: #048AC9, info: #87CEFA, success: #03BC6C, neutral: $border-color);

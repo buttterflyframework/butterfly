@@ -1,0 +1,58 @@
+/*
+
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    File: _menu.scss
+
+    Developed by Semir Babajić
+
+*/
+
+ul.navigation {
+    span.caret {
+        @include caret-down($font-color-base);
+    }
+}
+
+ul.dropdown-menu {
+    display: none;
+    border: 1px solid $border-color;
+}
+
+.dropdown.expand {
+    background: $navigation-pill-hover-color;
+    > ul.dropdown-menu {
+        list-style: none;
+        display: block;
+        background: white;
+        padding: 0;
+        > li {
+            padding: 0;
+            > a {
+                padding: $cell-padding-top / 1.15 $cell-padding-left;
+            }
+            &.dropdown-separator {
+                border-bottom: 1px solid $separator-color;
+                margin-top: $separator-margin;
+                margin-bottom: $separator-margin;
+            }
+        }
+    }
+}
+
+ul.navigation ul.dropdown-menu {
+    position: relative;
+    border: 0 none;
+}
+
+ul.navigation-desktop ul.dropdown-menu {
+    position: absolute;
+    @include box-shadow(0, 0, 5px, $border-color);
+}
+
+ul.navigation.mobile-view {
+    .dropdown.expand > ul.dropdown-menu > li > a {
+        padding-left: $cell-padding-left * 2;
+    }
+}

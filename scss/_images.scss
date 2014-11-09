@@ -3,7 +3,7 @@
     ButterflyJS
     Ultimate JavaScript front-end library
 
-    Version 1.0
+
 
     File: _images.scss
 
@@ -11,9 +11,23 @@
 
 */
 
+img {
+    margin-bottom: $cell-padding-top;
+    @include box-sizing(border-box);
+}
+
 img.responsive {
     display: block;
     width: 100%;
-    margin: 0;
-    padding: 0;
+}
+
+img.border {
+    border: 1px solid $border-color;
+    padding: $button-radius;
+    @include border-radius($button-radius);
+}
+
+a > img.border:hover {
+    border: 1px solid darken($border-color, 20);
+    @include box-shadow(0, 0, $button-radius, $border-color);
 }

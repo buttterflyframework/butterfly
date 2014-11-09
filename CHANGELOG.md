@@ -1,5 +1,15 @@
 # Butterfly Framework changelog
 
+## 1.0.3 beta (9th Nov 2014)
+* New CSS component – Dropdown menu
+ * Currently fully supported only when placed within `ul.navigation`
+ * Mobile friendly mode supported
+ * No support for nested dropdown menus
+* Implemented dropdown support code in `butterfly.js`
+* Added `scss/_menu.scss` to the project
+* Implemented CSS for applying styled border to `img` elements by adding `.border` class to them
+* Added an option of disabling navigation responsiveness by adding `.navigation-desktop` class to the `ul.navigation` tag
+
 ## 1.0.2 beta (8th Nov 2014)
 * New CSS component – Button Group 
  * Added support for stacking buttons within `<div class="button-group">` in either horizontal or vertical fashion 

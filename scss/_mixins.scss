@@ -3,7 +3,7 @@
     ButterflyJS
     Ultimate JavaScript front-end library
 
-    Version 1.0
+
 
     File: _mixins.scss
 
@@ -76,4 +76,56 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+@mixin caret-up($color) {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-bottom-color: $color;
+    position: relative;
+    top: -2px;
+    margin-left: 7px;
+}
+
+@mixin caret-down($color) {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-top-color: $color;
+    position: relative;
+    top: -2px;
+    margin-left: 7px;
+}
+
+@mixin caret-right($color) {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-left-color: $color;
+    position: relative;
+    top: -2px;
+    margin-left: 7px;
+}
+
+@mixin caret-left($color) {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-right-color: $color;
+    position: relative;
+    top: -2px;
+    margin-left: 7px;
 }

@@ -3,7 +3,7 @@
 	ButterflyJS
 	Ultimate JavaScript front-end library
 
-	Version 1.0
+	Version 1.0.3
 
 	File: butterfly.js
 
@@ -113,7 +113,7 @@ var Butterfly = function(element, options) {
 			}
 
 			for (i = 0; i < params.length; i++) {
-				string = string.replace('{' + i + '}', this.notNullOrEmpty(params[i]) ? 
+				string = string.replace('{' + i + '}', this.notNullOrEmpty(params[i]) ?
 					params[i] : '');
 			}
 
@@ -298,6 +298,17 @@ var Butterfly = function(element, options) {
 			},
 
 			/**
+			 * Orchestrates dropdown menu display
+			 * @param  {[type]} dropdown [description]
+			 * @return {[type]}          [description]
+			 */
+			handleDropdown: function(dropdown) {
+				dropdown.bind("click", function() {
+					dropdown.addClass("expand");
+				});
+			},
+
+			/**
 			 * Main resize handler. Handles containers resizing.
 			 */
 			resize: function(args) {
@@ -310,10 +321,14 @@ var Butterfly = function(element, options) {
 					});
 
 					// Handle navigation resizing
-					$("ul.navigation").each(function(i, e) {
+					$("ul.navigation").not(".navigation-desktop").each(function(i, e) {
 						self.resizeNavigation($(e));
 					});
 				}
+
+				$(".dropdown").each(function(i, e) {
+					self.handleDropdown($(e));
+				});
 			}
 		}
 	};
@@ -328,7 +343,7 @@ var Butterfly = function(element, options) {
 		 * Current version number
 		 * @type {string}
 		 */
-		version: "1.0.2",
+		version: "1.0.3",
 
 		/**
 		 * Release version
@@ -338,7 +353,7 @@ var Butterfly = function(element, options) {
 
 		/**
 		 * Default values
-		 * 
+		 *
 		 * @type {object}
 		 */
 		defaults: {
@@ -532,7 +547,7 @@ var Butterfly = function(element, options) {
 				// Deserialize content
 				try {
 					item = JSON.parse(item);
-				} catch(e) {
+				} catch (e) {
 					return null;
 				}
 
@@ -550,7 +565,7 @@ var Butterfly = function(element, options) {
 
 			/**
 			 * Removes item from cache only if it's expired (used by watchdog only)
-			 * 
+			 *
 			 * @param  {string} key Key to examine
 			 */
 			removeIfExpired: function(key) {
@@ -564,7 +579,7 @@ var Butterfly = function(element, options) {
 				// Deserialize content
 				try {
 					item = JSON.parse(item);
-				} catch(e) {
+				} catch (e) {
 					return;
 				}
 
@@ -597,7 +612,7 @@ var Butterfly = function(element, options) {
 		/**
 		 * Micro templating engine built around the core code originally developed by John Resig.
 		 *
-		 * Made numerous improvements including: 
+		 * Made numerous improvements including:
 		 * - proper whitespace preservation
 		 * - single quote issue fixed
 		 * - multiline js block allowed
@@ -944,7 +959,7 @@ var Butterfly = function(element, options) {
 
 		/**
 		 * Butterfly property object with basic events
-		 * 
+		 *
 		 * @param  {object} data Property content
 		 */
 		property: function(data) {
@@ -976,9 +991,9 @@ var Butterfly = function(element, options) {
 
 		/**
 		 * Butterfly model
-		 * 
-		 * @param  {object} context 
-		 * @return {object}         
+		 *
+		 * @param  {object} context
+		 * @return {object}
 		 */
 		model: function(context) {
 			if (context.initialize && typeof context.initialize === "function") {
@@ -1100,6 +1115,7 @@ var Butterfly = function(element, options) {
 		 */
 		unbind: function() {
 			$(window).unbind('resize');
+			$(document).unbind("mousedown");
 		},
 
 		/**
@@ -1111,6 +1127,15 @@ var Butterfly = function(element, options) {
 			// Bind resize event
 			$(window).bind('resize', function() {
 				_.internals.resize();
+			});
+
+			// Handling menus disposal when user clicks outside of the menu area
+			$(document).bind("mousedown", function(e) {
+				var menu = $(".expand");
+
+				if (!menu.is(e.target) && menu.has(e.target).length === 0) {
+					menu.removeClass("expand");
+				}
 			});
 		},
 
@@ -1160,7 +1185,7 @@ var Butterfly = function(element, options) {
 
 		Butterfly.prototype.reinitialize();
 
-		if (_.isFunction(Butterfly.prototype.runtime.callbacks['ready'].call(this))) {		
+		if (_.isFunction(Butterfly.prototype.runtime.callbacks['ready'].call(this))) {
 			Butterfly.prototype.runtime.callbacks['ready'].call(this);
 		}
 	});

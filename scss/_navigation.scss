@@ -3,7 +3,7 @@
     ButterflyJS
     Ultimate JavaScript front-end library
 
-    Version 1.0
+
 
     File: _navigation.scss
 
@@ -19,31 +19,31 @@ header.navigation, ul.navigation {
     z-index: $z-index-navigation;
     position: relative;
     @include box-shadow(0, 0, 10px, rgba(0, 0, 0, 0.1));
-    li {
+    > li {
         display: inline-block;
         padding: 0;
     }
-    li a {
+    > li a {
         font-size: $font-size-base;
         padding: $cell-padding-top * 1.5 $cell-padding-left;
         display: block;
         color: $font-color-base;
     }
-    li a:hover {
+    > li a:hover {
         background: $navigation-pill-hover-color;
         text-decoration: none;
     }
-    li.logo, li.logo a {
+    > li.logo, li.logo a {
         font-weight: bold;
     }
-    li.logo a:hover {
+    > li.logo a:hover {
         background: transparent;
     }
-    li.block {
+    > li.block {
         display: block;
         float: none;
     }
-    li div.touch-expand {
+    > li div.touch-expand {
         width: 32px;
         height: 32px;
         display: inline-block;
@@ -54,7 +54,7 @@ header.navigation, ul.navigation {
         background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeChcSCiZU3roRAAAAMklEQVRIx2NgGPKAcd5pygxgYTChzAAmSr0w8AawMJxhGAWjKXE0JY6mxNGUOJoSYQAAZ44HafQ1BTMAAAAASUVORK5CYII=);
         cursor: pointer;
     }
-    li a.active {
+    > li a.active {
         background: $navigation-pill-active-color;
     }
 }
