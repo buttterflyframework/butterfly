@@ -1,6 +1,12 @@
 # Butterfly Framework changelog
 
-## 1.0.3 beta (9th Nov 2014)
+## 1.0.4 beta (10th Nov 2014)
+* New JS object – `Butterfly.pubsub`
+ * Pubsub is a simple way to subscribe and publish events accross your application
+* Added a basic browser detection function whose results are integrated into `Butterfly.ready` callback in form of arguments
+* Added an internal function for generating a unique alphanumeric identifiers
+* Corrected a bug in `Butterfly.router` where an improper data context was used when calling a `destroy` function on a `Butterfly.controller`
+
 * New CSS component – Dropdown menu
  * Currently fully supported only when placed within `ul.navigation`
  * Mobile friendly mode supported

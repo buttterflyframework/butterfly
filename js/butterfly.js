@@ -121,6 +121,29 @@ var Butterfly = function(element, options) {
 		},
 
 		/**
+		 * Generates unique IDs that are used internally
+		 * @return {[type]} [description]
+		 */
+		
+		/**
+		 * Generates alphanumeric string sequence representing unique identifier
+		 * 
+		 * @param  {integer} length Desired sequence length
+		 * @return {string}         Generated identifier
+		 */
+		uid: function(length) {
+			var allowed = "abcdefghijklmnopqrstuvwxyz0123456789",
+				length = length || 16;
+				text = "";
+
+			for (var i = 0; i < length; i++) {
+				text += allowed.charAt(Math.floor(Math.random() * allowed.length));
+			}
+
+			return text;
+		},
+
+		/**
 		 * Traverses the stylesheets on the document looking for the matched selector, then style.
 		 *
 		 * @author rlemon @ stackowerflow.com (original author)
@@ -329,6 +352,50 @@ var Butterfly = function(element, options) {
 				$(".dropdown").each(function(i, e) {
 					self.handleDropdown($(e));
 				});
+			},
+
+			/**
+			 * Parses browser and version from userAgent string.
+			 * 
+			 * @return {object} Browser name and version inside an object 
+			 */
+			browserDetector: function() {
+				var agent = navigator.userAgent.toLowerCase(),
+					temp = null,
+					browser = null,
+					version = null,
+					browserMatch = agent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+
+				 // IE check (trident for newer IE versions)
+				if (/trident/i.test(browserMatch[1])) {
+					temp = /\brv[ :]+(\d+)/g.exec(agent) || [];
+					browser = 'msie';
+					version = temp[1] || '';
+				} else if (browserMatch[1] === "chrome") {
+					browser = 'chrome';
+					version = browserMatch[2];
+
+					temp = agent.match(/\bopr\/(\d+)/);
+					if (temp !== null) {
+						browser = 'opera';
+						version = temp[1];
+					}
+				} else {
+					browserMatch = browserMatch[2] ? [browserMatch[1], browserMatch[2]] : 
+						[navigator.appName, navigator.appVersion, "-?"];
+
+					if ((temp = agent.match(/version\/(\d+)/i)) != null) {
+						browserMatch.splice(1, 1, temp[1]);
+					}
+
+					browser = browserMatch[0];
+					version = browserMatch[1];
+				}
+
+				return {
+					browser: browser,
+					version: version
+				}
 			}
 		}
 	};
@@ -343,7 +410,7 @@ var Butterfly = function(element, options) {
 		 * Current version number
 		 * @type {string}
 		 */
-		version: "1.0.3",
+		version: "1.0.4",
 
 		/**
 		 * Release version
@@ -829,8 +896,8 @@ var Butterfly = function(element, options) {
 								_.format("js/controller/{0}Controller.js", route)
 							], function(controller) {
 								self.controller = controller;
-								if (
-									_.notNullOrEmpty(controller.destroy) && _.isFunction(controller.destroy)) {
+								if (_.notNullOrEmpty(controller.destroy) && _.isFunction(controller.destroy)) {
+									self.disposeContext = controller;
 									self.dispose = controller.destroy;
 								}
 								self.controller.query = query;
@@ -838,11 +905,12 @@ var Butterfly = function(element, options) {
 						} else {
 							// Retrieve dispose handler for current route
 							self.dispose = routes[route].call(self, query);
+							self.disposeContext = self;
 						}
 
 						// Call lost handler on previously loaded route
 						if (self.current !== route && self.dispose && _.isFunction(self.dispose)) {
-							self.dispose.call(self, query);
+							self.dispose.call(self.disposeContext, query);
 						}
 
 						// Set current route
@@ -1111,6 +1179,65 @@ var Butterfly = function(element, options) {
 		},
 
 		/**
+		 * Simple way to publish and subscribe/unsubscribe to events
+		 * @type {Object}
+		 */
+		pubsub: {
+			subscribers: {},
+
+			/**
+			 * Publishes an event to all subscribers
+			 * 
+			 * @param  {string} eventName Event to publish
+			 * @param  {object} arguments Data to pass to subscribers
+			 */
+			publish: function(eventName, arguments) {
+				var subscriber = null,
+					id = null;
+
+				for (id in this.subscribers) {
+					subscriber = this.subscribers[id];
+
+					if (eventName === subscriber.eventName) {
+						subscriber.handler.call(Butterfly, arguments);
+					}
+				}
+			},
+
+			/**
+			 * Subscribes a handler to a given event name
+			 * 
+			 * @param  {[type]} eventName [description]
+			 * @param  {[type]} handler   [description]
+			 * @return {string}           Unique ID for a subscriber
+			 */
+			subscribe: function(eventName, handler) {
+				var subscriberId = null;
+
+				// Generate ID to assign to this subscriber
+				subscriberId = _.uid();
+
+				this.subscribers[subscriberId] = {
+					eventName: eventName,
+					handler: handler
+				}
+
+				return subscriberId;
+			},
+
+			/**
+			 * Unsubscribes a subscriber by given subscriber ID
+			 * 
+			 * @param  {string} subscriberId [description]
+			 */
+			unsubscribe: function(subscriberId) {
+				if (subscriberId && _.notNullOrEmpty(this.subscribers[subscriberId])) {
+					delete this.subscribers[subscriberId];
+				}
+			}
+		},
+
+		/**
 		 * Events unbinding function (clears previously attached events)
 		 */
 		unbind: function() {
@@ -1151,6 +1278,9 @@ var Butterfly = function(element, options) {
 
 			// Manually call resize gateway to calculate initial container width (mobile devices)
 			_.internals.resize();
+
+			// Execute browser detection function
+			return _.internals.browserDetector();
 		}
 	};
 
@@ -1165,6 +1295,7 @@ var Butterfly = function(element, options) {
 	Butterfly.list = Butterfly.prototype.list;
 	Butterfly.model = Butterfly.prototype.model;
 	Butterfly.controller = Butterfly.prototype.controller;
+	Butterfly.pubsub = Butterfly.prototype.pubsub;
 	Butterfly.defaults = Butterfly.prototype.defaults;
 
 	// Callbacks
@@ -1179,14 +1310,17 @@ var Butterfly = function(element, options) {
 	 * @return {boolean} True if Butterfly was able to initialize, false otherwise
 	 */
 	$(document).ready(function() {
+		var init = null;
+
 		// Start cache watchdog that should pick up expired items. This prevents
 		// cache to fill.
 		_.internals.startCacheWatchdog();
 
-		Butterfly.prototype.reinitialize();
+		// Call reinitialize function that can be called many times
+		init = Butterfly.prototype.reinitialize();
 
 		if (_.isFunction(Butterfly.prototype.runtime.callbacks['ready'].call(this))) {
-			Butterfly.prototype.runtime.callbacks['ready'].call(this);
+			Butterfly.prototype.runtime.callbacks['ready'].call(this, init);
 		}
 	});
 
