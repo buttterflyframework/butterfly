@@ -1285,7 +1285,6 @@ var Butterfly = function(element, options) {
 	};
 
 	// Ensure Butterfly is in global scope
-	Butterfly = Butterfly;
 	Butterfly.cache = Butterfly.prototype.cache;
 	Butterfly.template = Butterfly.prototype.template;
 	Butterfly.router = Butterfly.prototype.router;
