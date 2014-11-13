@@ -23,11 +23,11 @@ img.responsive {
 
 img.border {
     border: 1px solid $border-color;
-    padding: $button-radius;
-    @include border-radius($button-radius);
+    padding: $button-border-radius;
+    @include border-radius($button-border-radius);
 }
 
 a > img.border:hover {
     border: 1px solid darken($border-color, 20);
-    @include box-shadow(0, 0, $button-radius, $border-color);
+    @include box-shadow(0, 0, $button-border-radius, $border-color);
 }

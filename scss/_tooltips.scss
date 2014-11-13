@@ -1,0 +1,59 @@
+/*
+    
+    ButterflyJS
+    Ultimate JavaScript front-end library
+
+    File: _typography.scss
+
+    Developed by Semir Babajić
+
+*/
+
+.tooltip {
+    position: absolute;
+    display: none;
+    .caret-up {
+        @include caret-up($tooltip-background, 5px, 2px, 0);
+        position: relative;
+        z-index: $z-index-tooltip-caret;
+    }
+    .caret-down {
+        @include caret-down($tooltip-background, 5px, -7px, 0);
+        position: relative;
+        z-index: $z-index-tooltip-caret;
+    }
+    .caret-left {
+        @include caret-left($tooltip-background, 10px, 0px, 0);
+        margin-left: $tooltip-offset-x;
+        position: absolute;
+        margin-right: 5px;
+        z-index: $z-index-tooltip-caret;
+    }
+    .caret-right {
+        @include caret-right($tooltip-background, 5px, 0px, 0);
+        margin-right: $tooltip-offset-x;
+        z-index: $z-index-tooltip-caret;
+    }
+    .content {
+        position: relative;
+        text-align: left;
+        background: $tooltip-background;
+        padding: $tooltip-padding-top $tooltip-padding-left;
+        // After detailed testing, decided to put !important here. User defined CSS may have some 
+        // rules that could make tooltip look funny...
+        color: $font-color-bright !important;
+        @include border-radius($tooltip-border-radius);
+        max-width: $tooltip-content-max-width;
+        @include box-shadow(0, 0, $tooltip-shadow-size, $tooltip-shadow-color);
+        z-index: $z-index-tooltip;
+    }
+    .content.inline {
+        display: inline-block;
+    }
+}
+
+.tooltip.right {
+    .content {
+        margin-left: 5px + $tooltip-offset-x;
+    }
+}

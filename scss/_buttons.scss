@@ -32,7 +32,7 @@ button, a.button, input[type="submit"] {
     * {
         color: map-get($base-colors-fc, default);
     }
-    @include border-radius($button-radius);
+    @include border-radius($button-border-radius);
     font-size: $font-size-base;
 }
 
@@ -146,12 +146,12 @@ button.disabled {
         @include border-radius(0);
         &:first-child {
             margin-left: 0;
-            @include border-top-left-radius($button-radius);
-            @include border-bottom-left-radius($button-radius);
+            @include border-top-left-radius($button-border-radius);
+            @include border-bottom-left-radius($button-border-radius);
         }
         &:last-child, &.dropdown {
-            @include border-top-right-radius($button-radius);
-            @include border-bottom-right-radius($button-radius);
+            @include border-top-right-radius($button-border-radius);
+            @include border-bottom-right-radius($button-border-radius);
         }
     }
 }
@@ -164,13 +164,13 @@ button.disabled {
         margin-top: -1px;
         @include border-radius(0);
         &:first-child {
-            @include border-top-left-radius($button-radius);
-            @include border-top-right-radius($button-radius);
+            @include border-top-left-radius($button-border-radius);
+            @include border-top-right-radius($button-border-radius);
             margin-top: 0;
         }
         &:last-child {
-            @include border-bottom-left-radius($button-radius);
-            @include border-bottom-right-radius($button-radius);
+            @include border-bottom-left-radius($button-border-radius);
+            @include border-bottom-right-radius($button-border-radius);
         }
     }
 }

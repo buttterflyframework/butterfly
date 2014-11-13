@@ -396,6 +396,16 @@ var Butterfly = function(element, options) {
 					browser: browser,
 					version: version
 				}
+			},
+
+			/**
+			 * Applies Tooltip plugin to all elemn
+			 * @return {[type]} [description]
+			 */
+			tooltips: function() {
+				$("[title]").each(function(i, e) {
+					$(e).tooltip();
+				});
 			}
 		}
 	};
@@ -410,7 +420,7 @@ var Butterfly = function(element, options) {
 		 * Current version number
 		 * @type {string}
 		 */
-		version: "1.0.4",
+		version: "1.0.5",
 
 		/**
 		 * Release version
@@ -454,7 +464,14 @@ var Butterfly = function(element, options) {
 			 * Context classes as defined in CSS
 			 * @type {array}
 			 */
-			context_classes: ['info', 'success', 'warning', 'critical', 'neutral']
+			context_classes: ['info', 'success', 'warning', 'critical', 'neutral'],
+
+			/**
+			 * Determines if Butterfly should automatically use Tooltip plugin on HTML elements
+			 * with a "title" attribute
+			 * @type {boolean}
+			 */
+			handle_tooltips: false,
 		},
 
 		/**
@@ -1279,6 +1296,11 @@ var Butterfly = function(element, options) {
 			// Manually call resize gateway to calculate initial container width (mobile devices)
 			_.internals.resize();
 
+			// Apply tooltip plugin to all elements having a "title" attribute 
+			if (this.defaults.handle_tooltips) {
+				_.internals.tooltips();
+			}
+
 			// Execute browser detection function
 			return _.internals.browserDetector();
 		}
@@ -1322,6 +1344,102 @@ var Butterfly = function(element, options) {
 			Butterfly.prototype.runtime.callbacks['ready'].call(this, init);
 		}
 	});
+
+	/**
+	 * Butterfly tooltip jQuery plugin
+	 */
+	$.fn.tooltip = function(options) {
+		// Create new instance of existing Butterfly
+		var instance = new Butterfly(this, options);
+
+		// Extend Butterfly instance with sticky plugin functions
+		$.extend(instance, {
+			tooltip: null,
+
+			_construct: function(butterfly) {
+				var self = this,
+					templates = {
+						down: '<div class="tooltip align-center"><div class="caret-up"></div><div class="content">{0}</div></div>',
+						up: '<div class="tooltip align-center"><div class="content">{0}</div><div class="caret-down"></div></div>',
+						left: '<div class="tooltip"><div class="content inline">{0}</div><div class="caret-right"></div></div>',
+						right: '<div class="tooltip align-left right"><div class="caret-left inline"></div><div class="content inline">{0}</div></div>'
+					},
+					template = '',
+					elemPos =  null,
+					centerX = null,
+					centerY = null,
+					options = {
+						timeout: 200,
+						position: 'top'
+					};
+
+				// Remove title attribute so browser doesn't show default tooltip
+				self.$element.attr("butterfly-title", self.$element.attr("title")).removeAttr("title");
+
+				// Merge user defined options with default plugin options
+				$.extend(options, self.options);
+
+				template = _.format(templates[options.position], self.$element.attr("butterfly-title"));
+
+				// Attach to mouseover
+				self.$element.hover(function() {
+					self.$element.addClass("butterfly-hover");
+
+					setTimeout(function() {
+						if (_.isNull(self.tooltip)) {
+							self.$element.after(template);
+							self.tooltip = self.$element.next();
+						}
+
+						elemPos = self.$element.position();
+						centerX = (self.$element.outerWidth() - self.tooltip.outerWidth()) / 2;
+						centerY = (self.$element.outerHeight() - self.tooltip.outerHeight()) / 2;
+
+						switch (options.position) {
+							case "up":
+								self.tooltip.css("top", (elemPos.top - self.tooltip.outerHeight()) + "px");
+								self.tooltip.css("left", elemPos.left + centerX  + "px");
+								break;
+							case "down":
+								self.tooltip.css("left", elemPos.left + centerX + "px");
+								self.tooltip.css("top", elemPos.top + self.$element.outerHeight() + "px");
+								break;
+							case "left":
+								self.tooltip.css("left", elemPos.left - self.tooltip.outerWidth() + "px");
+								self.tooltip.css("top", elemPos.top + centerY + "px");
+								break;
+							case "right":
+								self.tooltip.css("left", elemPos.left + self.$element.outerWidth() + "px");
+								self.tooltip.css("top", elemPos.top + centerY + "px");
+								// Now a fix for something that can't be easily done via regular CSS
+								var 
+									caret = self.tooltip.find('.caret-left'),
+									caretH = caret.outerHeight(),
+									caretCenterY = (self.tooltip.outerHeight() - caretH) / 2;
+
+								caret.css("top", caretCenterY);
+
+								break;
+						}
+
+						if (self.$element.hasClass("butterfly-hover")) {
+							self.tooltip.fadeIn("fast");
+						}
+					}, options.timeout);
+				}, function() {
+					self.$element.removeClass("butterfly-hover");
+					if (_.notNull(self.tooltip)) {
+						self.tooltip.fadeOut("fast");
+					}
+				});
+
+				// Allow chaining
+				return self.$element;
+			}
+		});
+
+		return instance._construct.apply(instance);
+	};
 
 	/**
 	 * Butterfly sticky box

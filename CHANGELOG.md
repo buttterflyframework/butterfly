@@ -1,5 +1,11 @@
 # Butterfly Framework changelog
 
+## 1.0.5 beta (13th Nov 2014)
+* New jQuery plugin – `tooltip` (initial features)
+ * A simple way to display a stylish instead of a plain default tooltip 
+ * Ability to specify tooltip orientation via initialization options
+* Added possibility to tell Butterfly to pick up all elements with `title` attribute and to apply `tooltip` plugin on them (default is `false`)
+
 ## 1.0.4 beta (10th Nov 2014)
 * New JS object – `Butterfly.pubsub`
  * Pubsub is a simple way to subscribe and publish events accross your application

@@ -17,6 +17,8 @@ $z-index-dialog: $z-index-base * 2000;
 $z-index-overlay: $z-index-base * 2900;
 $z-index-menu: $z-index-base * 3000;
 $z-index-dialog-modal: $z-index-base * 5000;
+$z-index-tooltip: $z-index-base * 6000;
+$z-index-tooltip-caret: $z-index-tooltip + 1;
 
 // Layout variables
 $page-width-wide: 1280px;
@@ -76,7 +78,7 @@ $base-colors-fc: (critical: #FAFAFA, warning: #FAFAFA, default: #FAFAFA, info: #
 
 // Buttons variables
 $button-margin: 5px;
-$button-radius: 5px;
+$button-border-radius: 5px;
 
 // Boxes variables
 $code-box-padding: 9px 12px;
@@ -99,3 +101,13 @@ $dialog-shadow-color: rgba(0, 0, 0, 0.3);
 
 // Billboard variables
 $billboard-padding-top: 30px;
+
+// Tooltip variables
+$tooltip-padding-top: 8px;
+$tooltip-padding-left: 10px;
+$tooltip-border-radius: 5px;
+$tooltip-background: rgba(255, 255, 255, 0.98);
+$tooltip-offset-x: 5px;
+$tooltip-content-max-width: 300px;
+$tooltip-shadow-color: rgba(0, 0, 0, 0.2);
+$tooltip-shadow-size: 7px;
