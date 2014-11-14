@@ -472,6 +472,12 @@ var Butterfly = function(element, options) {
 			 * @type {boolean}
 			 */
 			handle_tooltips: false,
+
+			/**
+			 * Default site root where convetion resources will be fetched from
+			 * @type {String}
+			 */
+			site_root: ''
 		},
 
 		/**
@@ -910,7 +916,7 @@ var Butterfly = function(element, options) {
 							// This route is compliant to Butterfly's convention. Load matching
 							// controller.
 							Butterfly.modules([
-								_.format("js/controller/{0}Controller.js", route)
+								_.format("{0}js/controller/{1}Controller.js", [Butterfly.defaults.siteRoot, route])
 							], function(controller) {
 								self.controller = controller;
 								if (_.notNullOrEmpty(controller.destroy) && _.isFunction(controller.destroy)) {
@@ -1060,7 +1066,7 @@ var Butterfly = function(element, options) {
 					return;
 				}
 
-				self.changed.call(self, self.data, old);
+				self.changed.call(self, self.data, old, cancel);
 			};
 
 			self.get = function() {
