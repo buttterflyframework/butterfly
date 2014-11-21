@@ -3,7 +3,7 @@
 	ButterflyJS
 	Ultimate JavaScript front-end library
 
-	Version 1.0.3
+	Version 1.0.6
 
 	File: butterfly.js
 
@@ -124,17 +124,17 @@ var Butterfly = function(element, options) {
 		 * Generates unique IDs that are used internally
 		 * @return {[type]} [description]
 		 */
-		
+
 		/**
 		 * Generates alphanumeric string sequence representing unique identifier
-		 * 
+		 *
 		 * @param  {integer} length Desired sequence length
 		 * @return {string}         Generated identifier
 		 */
 		uid: function(length) {
 			var allowed = "abcdefghijklmnopqrstuvwxyz0123456789",
 				length = length || 16;
-				text = "";
+			text = "";
 
 			for (var i = 0; i < length; i++) {
 				text += allowed.charAt(Math.floor(Math.random() * allowed.length));
@@ -248,7 +248,7 @@ var Butterfly = function(element, options) {
 
 				// Make sure to size container according to the viewport
 				if (viewportVidth < containerWidth) {
-					container.width(viewportVidth);
+					container.outerWidth(viewportVidth);
 				}
 
 				// Stop resizing responsive cells and make them 100% wide after viewport is
@@ -262,8 +262,8 @@ var Butterfly = function(element, options) {
 				}
 
 				// Viewport is (now) large enough to fit original container size
-				if (viewportVidth > containerWidth && container.width() < containerWidth) {
-					container.width(containerWidth);
+				if (viewportVidth > containerWidth && container.outerWidth() < containerWidth) {
+					container.outerWidth(containerWidth);
 				}
 			},
 
@@ -276,7 +276,7 @@ var Butterfly = function(element, options) {
 			 */
 			resizeNavigation: function(navigation) {
 				var targetDevice = $('body').attr('class'),
-					navigationWidth = $(navigation).width(),
+					navigationWidth = $(navigation).outerWidth(),
 					mobileWidth = parseInt(_.css('width', 'body.mobile div.container')),
 					expanded, fixed;
 
@@ -356,8 +356,8 @@ var Butterfly = function(element, options) {
 
 			/**
 			 * Parses browser and version from userAgent string.
-			 * 
-			 * @return {object} Browser name and version inside an object 
+			 *
+			 * @return {object} Browser name and version inside an object
 			 */
 			browserDetector: function() {
 				var agent = navigator.userAgent.toLowerCase(),
@@ -366,7 +366,7 @@ var Butterfly = function(element, options) {
 					version = null,
 					browserMatch = agent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
-				 // IE check (trident for newer IE versions)
+				// IE check (trident for newer IE versions)
 				if (/trident/i.test(browserMatch[1])) {
 					temp = /\brv[ :]+(\d+)/g.exec(agent) || [];
 					browser = 'msie';
@@ -381,7 +381,7 @@ var Butterfly = function(element, options) {
 						version = temp[1];
 					}
 				} else {
-					browserMatch = browserMatch[2] ? [browserMatch[1], browserMatch[2]] : 
+					browserMatch = browserMatch[2] ? [browserMatch[1], browserMatch[2]] :
 						[navigator.appName, navigator.appVersion, "-?"];
 
 					if ((temp = agent.match(/version\/(\d+)/i)) != null) {
@@ -420,7 +420,7 @@ var Butterfly = function(element, options) {
 		 * Current version number
 		 * @type {string}
 		 */
-		version: "1.0.5",
+		version: "1.0.6",
 
 		/**
 		 * Release version
@@ -654,6 +654,16 @@ var Butterfly = function(element, options) {
 			},
 
 			/**
+			 * Simple check that determines if given key matches cache key prefix
+			 *
+			 * @param  {string}  key Key to examine
+			 * @return {boolean}     True if key matches cache item
+			 */
+			isCacheItem: function(key) {
+				return key.indexOf(Butterfly.prototype.cache.prefix) === 0;
+			},
+
+			/**
 			 * Removes item from cache only if it's expired (used by watchdog only)
 			 *
 			 * @param  {string} key Key to examine
@@ -674,7 +684,7 @@ var Butterfly = function(element, options) {
 				}
 
 				// Return if it hasn't expire yet
-				if (new Date().getTime() < item.expires) {
+				if (!this.isCacheItem(key) || new Date().getTime() < item.expires) {
 					return;
 				}
 
@@ -719,10 +729,6 @@ var Butterfly = function(element, options) {
 				fn = null,
 				compiled = null;
 
-			if (content instanceof $) {
-				template = $(content).html();
-			}
-
 			try {
 				// Execute templating function. TODO: Implement short term caching of compiled HTML
 				compiled = this.cache.read(template);
@@ -749,11 +755,6 @@ var Butterfly = function(element, options) {
 			} catch (e) {
 				throw new Error("Template compilation error, aborting.\n\r\n\r" +
 					e + "\n\r\n\r" + e.stack);
-			}
-
-			// Store compiled results into in case of jQuery object
-			if (content instanceof $) {
-				$(content).html(compiled);
 			}
 
 			return compiled;
@@ -792,47 +793,40 @@ var Butterfly = function(element, options) {
 					module = module.substring(1);
 				}
 
+				request += "$.ajax({url:'" + module + "',dataType:'text',type:'GET'}),";
+				response += "r" + m + ",";
+
 				switch (type) {
 					case "js":
-						request += "$.ajax({url:'" + module + "',dataType:'text'}),";
-						response += "r" + m + ",";
-
 						if (compile) {
-							successCallback += "eval(typeof r" + m + "==='string'?r" + m + ":r" + m + "[0]),";
+							successCallback += "eval(typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0]),";
 						} else {
-							successCallback += "r" + m + "[0],";
+							successCallback += "typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0],";
 						}
 
 						break;
 					case "htm":
 					case "html":
-						request += "$.get('" + module + "'),";
-						response += "r" + m + ",";
-
 						if (compile) {
-							successCallback += "Butterfly.prototype.template(r" + m + "[0],window),";
+							successCallback += "Butterfly.prototype.template(typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0],window),";
 						} else {
-							successCallback += "r" + m + "[0],";
+							successCallback += "typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0],";
 						}
-
-						request += "$.get('" + module + "'),";
 
 						break;
-					case "css":
-						request += "$.get('" + module + "'),";
-						response += "r" + m + ",";
 
+					case "css":
 						if (compile) {
-							successCallback += "$('head').append('<style type=\"text/css\">' + Butterfly.prototype.template(r" + m + "[0],window) + '</style>'),";
+							successCallback += "$('head').append('<style type=\"text/css\">' + Butterfly.prototype.template(typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0],window) + '</style>'),";
 						} else {
-							successCallback += "$('head').append('<style type=\"text/css\">' + r" + m + "[0] + '</style>'),";
+							successCallback += "$('head').append('<style type=\"text/css\">' + typeof r" + m + " === 'string' ? r" + m + " : r" + m + "[0] + '</style>'),";
 						}
+
 						break;
 
 					default:
-						request += "$.get('" + module + "'),";
-						response += "r" + m + ",";
-						successCallback += "r" + m + "[0],";
+						successCallback += "r" + m + ",";
+						break;
 				}
 			}
 
@@ -843,10 +837,8 @@ var Butterfly = function(element, options) {
 
 			fn = new Function("c", "s", "$.when(" + request + ").done(function(" + response + "){try{c.done.call(s," + successCallback + ")}" +
 				"catch(e){throw new Error('Module load error, aborting. (' + e + ')')};});");
-
 			return new fn(context, this);
 		},
-
 		/**
 		 * Routes listener
 		 *
@@ -933,7 +925,19 @@ var Butterfly = function(element, options) {
 
 						// Call lost handler on previously loaded route
 						if (self.current !== route && self.dispose && _.isFunction(self.dispose)) {
+							var index, object;
+
+							// Call function to dispose resources
 							self.dispose.call(self.disposeContext, query);
+
+							// Make sure to call destroy function on sub-controllers also
+							for (index in self.disposeContext) {
+								object = self.disposeContext[index];
+								if (_.notNullOrEmpty(object.destroy) && _.isFunction(object.destroy)) {
+									object.destroy.call(object);
+								}
+							}
+
 						}
 
 						// Set current route
@@ -1054,19 +1058,102 @@ var Butterfly = function(element, options) {
 		 * @param  {object} data Property content
 		 */
 		property: function(data) {
-			var self = this;
+			var self = this,
+				isQueryInput = false;
+
 			self.data = data;
+
+			/**
+			 * Updates underlying jQuery object.
+			 *
+			 * @param  {[type]} value [description]
+			 * @return {[type]}       [description]
+			 */
+			var updateUnderlyingjQueryObject = function(value) {
+				var name = data[0].nodeName.toLowerCase(),
+					type = data.attr('type');
+
+				if ((name === 'input' && type === 'text') || name === 'textarea' || name === 'select') {
+					data.val(value);
+				} else if (name === 'input' && (type === 'radio' || type === 'checkbox')) {
+					data.prop('checked', value);
+				} else {
+					data.html(value);
+				}
+			};
+
+			// Handling jQuery as data argument
+			if (data instanceof jQuery && _.notNullOrEmpty(data[0])) {
+				var name = data[0].nodeName.toLowerCase(),
+					type = data.attr('type');
+
+				// Change handler for text elements
+				if ((name === 'input' && type === 'text') || name === 'textarea') {
+					self.data = data.val();
+
+					data.bind("keydown", function() {
+						self.set(data.val());
+					}).bind("change", function() {
+						self.set(data.val());
+					}).bind("keyup", function() {
+						self.set(data.val());
+					});
+				}
+
+				// Handler for radio and checkboxes
+				if (name === 'input' && (type === 'radio' || type === 'checkbox')) {
+					data.bind("change", function() {
+						self.set(data.is(":checked"));
+					});
+
+					// Special code to detect when a radio button is unchecked
+					$("input[name='" + data.attr("name") + "']").bind("change", function() {
+						if (!data.is(":checked")) {
+							self.set(data.is(":checked"));
+						}
+					});
+				}
+
+				// Handler for select field
+				if (name === 'select') {
+					data.bind("change", function() {
+						self.set(data.val());
+					});
+				}
+
+				isjQueryObject = true;
+			}
 
 			self.set = function(value) {
 				var old = self.data;
 
 				self.data = value;
 
+				// Revert to old value in case data parameter is jQuery form input
+				if (isjQueryObject === true) {
+					updateUnderlyingjQueryObject(value);
+				}
+
 				if (_.isNullOrEmpty(self.changed) || !_.isFunction(self.changed)) {
 					return;
 				}
 
-				self.changed.call(self, self.data, old, cancel);
+				var args = {
+					value: self.data,
+					previous: old,
+					cancel: false
+				};
+
+				self.changed.call(self, args);
+
+				if (args.cancel === true) {
+					self.data = old;
+
+					// Revert to old value in case data parameter is jQuery form input
+					if (isjQueryObject === true) {
+						updateUnderlyingjQueryObject(old);
+					}
+				}
 			};
 
 			self.get = function() {
@@ -1087,17 +1174,100 @@ var Butterfly = function(element, options) {
 		 * @return {object}
 		 */
 		model: function(context) {
+			if (_.isNullOrEmpty(context)) {
+				context = {};
+			}
+
+			var self = this;
+
 			if (context.initialize && typeof context.initialize === "function") {
 				context.initialize();
 			}
+
+			/**
+			 * Populates model with properties using fields on a form (input elements) within a form
+			 *
+			 * @param  {object} form jQuery form selector
+			 */
+			context.mapTo = function(form, callback) {
+				var id = '';
+				form.find("input, select, [type='property'], textarea").each(function(i, e) {
+					attr = $(e).attr("name");
+					context[attr] = new Butterfly.property($(e));
+				}).promise().done(function() {
+					if (_.isFunction(callback)) {
+						callback.call(context);
+					}
+				});
+			};
+
+			context.fromJson = function(json) {
+				var data = typeof json === 'object' ? json : JSON.parse(json),
+					index = null;
+
+				for (index in data) {
+					if (context[index] instanceof Butterfly.property) {
+						context[index].set(data[index]);
+					} else {
+						context[index] = new Butterfly.property(data[index]);
+					}
+				}
+			};
+
+			context.toJson = function() {
+				var structure = {},
+					p = null,
+					value = null;
+
+				for (p in context) {
+					value = context[p];
+
+					// Ignoring functions
+					if (_.isFunction(value)) {
+						continue;
+					}
+
+					// Determine how to handle values
+					if (value instanceof Butterfly.model) {
+						structure[p] = value.toJson();
+					} else if (value instanceof Butterfly.property) {
+						structure[p] = value.get();
+					} else {
+						structure[p] = value;
+					}
+				}
+
+				return JSON.stringify(structure);
+			};
+
+			context.empty = function() {
+				var p, value;
+				for (p in context) {
+					value = context[p];
+
+					if (_.isFunction(value)) {
+						continue;
+					}
+
+					// Determine how to handle values
+					if (value instanceof Butterfly.model) {
+						value.empty();
+					} else if (value instanceof Butterfly.property) {
+						value.set(null);
+					} else {
+						value = null;
+					}
+				}
+			};
 
 			/**
 			 * Destroys resources
 			 * @return {[type]} [description]
 			 */
 			self.destroy = function() {
-				if (context.destroy && typeof context.destroy === "function")
+				if (context.destroy && typeof context.destroy === "function") {
 					context.destroy.call(context);
+				}
 			};
 
 			return context;
@@ -1161,31 +1331,35 @@ var Butterfly = function(element, options) {
 						context.views = v;
 
 						// Call initialize
-						context.initialize();
+						if (_.notNullOrEmpty(context.initialize) && _.isFunction(context.initialize)) {
+							context.initialize();
+						}
 					});
-				}
-
-				// Fetch model only
-				if (_.notNullOrEmpty(model)) {
+				} else if (_.notNullOrEmpty(model)) {
+					// Fetch model only
 					Butterfly.modules([
 						model
 					], function(m) {
 						context.model = m;
-						context.initialize();
+						if (_.notNullOrEmpty(context.initialize) && _.isFunction(context.initialize)) {
+							context.initialize();
+						}
 					});
-				}
-
-				// Fetch views only
-				if (_.notNullOrEmpty(views)) {
+				} else if (_.notNullOrEmpty(views)) {
+					// Fetch views only					
 					Butterfly.modules([
 						views
 					], function(v) {
 						context.views = v;
-						context.initialize();
+						if (_.notNullOrEmpty(context.initialize) && _.isFunction(context.initialize)) {
+							context.initialize();
+						}
 					});
 				}
 			} else {
-				context.initialize();
+				if (_.notNullOrEmpty(context.initialize) && _.isFunction(context.initialize)) {
+					context.initialize();
+				}
 			}
 
 			/**
@@ -1210,7 +1384,7 @@ var Butterfly = function(element, options) {
 
 			/**
 			 * Publishes an event to all subscribers
-			 * 
+			 *
 			 * @param  {string} eventName Event to publish
 			 * @param  {object} arguments Data to pass to subscribers
 			 */
@@ -1229,7 +1403,7 @@ var Butterfly = function(element, options) {
 
 			/**
 			 * Subscribes a handler to a given event name
-			 * 
+			 *
 			 * @param  {[type]} eventName [description]
 			 * @param  {[type]} handler   [description]
 			 * @return {string}           Unique ID for a subscriber
@@ -1250,7 +1424,7 @@ var Butterfly = function(element, options) {
 
 			/**
 			 * Unsubscribes a subscriber by given subscriber ID
-			 * 
+			 *
 			 * @param  {string} subscriberId [description]
 			 */
 			unsubscribe: function(subscriberId) {
@@ -1371,7 +1545,7 @@ var Butterfly = function(element, options) {
 						right: '<div class="tooltip align-left right"><div class="caret-left inline"></div><div class="content inline">{0}</div></div>'
 					},
 					template = '',
-					elemPos =  null,
+					elemPos = null,
 					centerX = null,
 					centerY = null,
 					options = {
@@ -1404,7 +1578,7 @@ var Butterfly = function(element, options) {
 						switch (options.position) {
 							case "up":
 								self.tooltip.css("top", (elemPos.top - self.tooltip.outerHeight()) + "px");
-								self.tooltip.css("left", elemPos.left + centerX  + "px");
+								self.tooltip.css("left", elemPos.left + centerX + "px");
 								break;
 							case "down":
 								self.tooltip.css("left", elemPos.left + centerX + "px");
@@ -1418,7 +1592,7 @@ var Butterfly = function(element, options) {
 								self.tooltip.css("left", elemPos.left + self.$element.outerWidth() + "px");
 								self.tooltip.css("top", elemPos.top + centerY + "px");
 								// Now a fix for something that can't be easily done via regular CSS
-								var 
+								var
 									caret = self.tooltip.find('.caret-left'),
 									caretH = caret.outerHeight(),
 									caretCenterY = (self.tooltip.outerHeight() - caretH) / 2;
@@ -1638,6 +1812,7 @@ var Butterfly = function(element, options) {
 				options.moveable = self.$element.hasClass("moveable");
 				options.clone = self.$element.hasClass("clone");
 				options.width = self.$element.width();
+				options.height = self.$element.height();
 				options.title = self.$element.find(".header h1").text();
 
 				// Overwrite default options by user defined options
@@ -1686,6 +1861,7 @@ var Butterfly = function(element, options) {
 				// Center the element
 				self.$element.width(self.options.width);
 				self.$element.css("left", ($(window).width() - self.options.width) / 2 + "px");
+				self.$element.css("top", ($(window).height() - self.options.height) / 2 + "px");
 				self.$element.find(".header h1").text(self.options.title);
 
 				// Blur all other opened dialogs
@@ -1767,7 +1943,7 @@ var Butterfly = function(element, options) {
 				}).bind("mousedown", function(e) {
 					self.bringToFront();
 				}).bind("click", function(e) {
-					$(this).trigger('focus');
+					self.bringToFront();
 				});
 
 				return self;
@@ -1890,8 +2066,8 @@ var Butterfly = function(element, options) {
 				self.sendToBack();
 
 				if (!self.options.modal) {
-					this.runtime.dialogs.front++;
-					self.$element.css("z-index", this.runtime.dialogs.front);
+					self.runtime.dialogs.front++;
+					self.$element.css("z-index", self.runtime.dialogs.front);
 					self.$element.addClass("focus");
 				}
 
@@ -1914,7 +2090,7 @@ var Butterfly = function(element, options) {
 		// Default option values
 		options = $.extend({
 			handle: "",
-			cursor: "default",
+			cursor: "move",
 			ignore: ""
 		}, options);
 

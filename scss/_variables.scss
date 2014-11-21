@@ -71,6 +71,7 @@ $navigation-pill-active-color: rgba(240, 240, 240, 1);
 // Dropdown menu variables
 $separator-color: lighten($border-color, 6);
 $separator-margin: 5px;
+$dropdown-min-width: 220px;
 
 // Contextual color table
 $base-colors-bg: (critical: #DB043D, warning: #F29F04, default: #048AC9, info: #87CEFA, success: #03BC6C, neutral: $border-color);
@@ -94,10 +95,11 @@ $attention-box-bg-color: #F9F9F9;
 $loading-overlay-bg-color: rgba(255, 255, 255, 0.85);
 
 // Dialog variables
-$dialog-overlay-bg-color: rgba(255, 255, 255, 0.85);
+$dialog-overlay-bg-color: rgba(255, 255, 255, 0.65);
 $dialog-shadow-size: 20px;
 $dialog-initial-width: 620px;
 $dialog-shadow-color: rgba(0, 0, 0, 0.3);
+$dialog-border-radius: 7px;
 
 // Billboard variables
 $billboard-padding-top: 30px;

@@ -133,6 +133,18 @@ a:hover {
     text-transform: capitalize;
 }
 
+.bright {
+    color: $font-color-bright !important;
+}
+
+.brighter {
+    color: $font-color-brighter !important;
+}
+
+.brightest {
+    color: $font-color-brightest !important;
+}
+
 b, strong {
     font-weight: bold;
 }

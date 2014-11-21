@@ -1,20 +1,23 @@
 /*
-	
-	ButterflyJS
-	Ultimate JavaScript front-end library
+    
+    ButterflyJS
+    Ultimate JavaScript front-end library
 
-	File: _variables.scss
+    File: _variables.scss
 
-	Developed by Semir Babajić
+    Developed by Semir Babajić
 
-	---
-	IMPORTANT NOTE: Do not change selector declarations in this file.
+    ---
+    IMPORTANT NOTE: Do not change selector declarations in this file.
 
 */
 
 body container, body div.container {
     margin: 0 auto;
     width: $page-width-default;
+    @include box-sizing(border-box);
+    padding-left: $cell-padding-left;
+    padding-right: $cell-padding-left;
 }
 
 body.wide container, body.wide div.container {

@@ -37,6 +37,8 @@
 
 .dialog {
     @include opacity(0.95);
+    @include box-shadow(0, 0, $dialog-shadow-size, rgba($dialog-shadow-color, 0.1));
+    @include border-radius($dialog-border-radius);
     display: none;
     position: fixed;
     width: $dialog-initial-width;
@@ -44,9 +46,9 @@
     outline: 0;
     cursor: default;
     z-index: $z-index-dialog;
-    @include box-shadow(0, 0, $dialog-shadow-size, rgba($dialog-shadow-color, 0.1));
     .header {
         @include prevent-selection;
+        cursor: move;
         .button-group {
             float: right;
             button, .button, input[type="submit"] {
@@ -59,6 +61,7 @@
                 font-weight: bold;
                 font-size: $font-size-large;
                 &:first-child {
+                    @include border-top-right-radius($dialog-border-radius);
                     margin-right: 0px;
                 }
             }
@@ -80,11 +83,11 @@
     .content {
         padding: $cell-padding-top $cell-padding-left;
         border-bottom: 1px solid $border-color;
-        @include box-shadow(0, 0, $cell-padding-top / 2, lighten($boxes-shadow-color, 10), "inset");
         max-height: 600px;
         overflow-y: auto;
     }
     .footer {
+        cursor: move;
         @include prevent-selection;
         @include box-sizing(border-box);
         > div {
@@ -109,6 +112,7 @@
                 border: 0 none;
                 @include border-radius(0);
                 &:first-child {
+                    @include border-bottom-right-radius($dialog-border-radius);
                     margin-right: 0px;
                 }
             }
