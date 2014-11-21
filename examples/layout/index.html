@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Butterfly Framework</title>
+
+	<link rel="stylesheet" type="text/css" href="../../css/butterfly.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/site.css"/>
+	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../../js/butterfly.js"></script>
+
+	<style type="text/css">
+		.row {
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="cell c12 align-center">
+				<h1>Responsive layout demonstration</h1>
+			</div>
+		</div>
+		<h3>Layout divided into three virtual blocks of equal width</h3>
+		<div class="row documentation-layout">
+			<div class="cell c4">
+				<h5><code>.cell c4</code></h5>
+			</div>
+			<div class="cell c4">
+				<h5><code>.cell c4</code></h5>
+			</div>
+			<div class="cell c4">
+				<h5><code>.cell c4</code></h5>
+			</div>
+		</div>
+		<h3>Layout divided into three virtual blocks of uneven width</h3>
+		<div class="row documentation-layout">
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c7">
+				<h5><code>.cell c7</code></h5>
+			</div>
+			<div class="cell c3">
+				<h5><code>.cell c3</code></h5>
+			</div>
+		</div>
+		<h3>Many virtual blocks</h3>
+		<div class="row documentation-layout">
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+			<div class="cell c2">
+				<h5><code>.cell c2</code></h5>
+			</div>
+		</div>
+		<p>Note that row is designed to host 12 virtual blocks of space.</p>
+		<h3>Cells can have virtual margins</h3>
+		<div class="row documentation-layout">
+			<div class="cell c4">
+				<h5><code>.cell c4</code></h5>
+			</div>
+			<div class="cell m4 c4">
+				<h5><code>.cell m4 c4</code></h5>
+			</div>
+		</div>
+		<p>See how the last cell has a margin of four virtual blocks of space. Easily add a margin by adding classes <code>.m1</code> through <code>.m11</code></p>
+		<h3>Nesting cells and rows</h3>
+		<div class="row documentation-layout">
+			<div class="cell c8">
+				<div class="row">
+					<div class="cell c6">
+						<h5>Nested cell <code>.cell c6</code></h5>
+					</div>
+					<div class="cell c6">
+						<h5>Nested cell <code>.cell c6</code></h5>
+					</div>
+				</div>
+			</div>
+			<div class="cell c4">
+				<h5>Top level cell <code>.cell c4</code></h5>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

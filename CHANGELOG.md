@@ -1,5 +1,20 @@
 # Butterfly Framework changelog
 
+## 1.0.6 beta (21st Nov 2014)
+* New feature - `Butterfly.property` binding to a jQuery object
+* New feature - `Butterfly.model` HTML binding
+* New feature - `Butterfly.model` JSON two way binding 
+* Bug fixes:
+ * Fixed issue on controller object where initialize function was triggered more than once (up to three times) causing major app slowdown
+ * Corrected issue when `modules` function was fetching all HTML files twice, causing performance issues
+ * Improved responsive layout system by adjusting code and SCSS files
+ * Fixed critical behavior of cache watchdog which was removing non-cache items from `localStorage`
+ * Removed support for jQuery objects from templating function
+* Router is now calling 'destroy' function on sub-controllers (sub-controller reference has to be stored into main controller)
+* Dialog UI improvements and bug fixes
+* Navigation bar UI improvements and bug fixes
+* Responsive layout system is improved
+
 ## 1.0.5 beta (13th Nov 2014)
 * New jQuery plugin – `tooltip` (initial features)
  * A simple way to display a stylish instead of a plain default tooltip 
