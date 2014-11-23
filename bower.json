@@ -6,7 +6,10 @@
     "semir.babajic@gmail.com"
   ],
   "description": "Next generation Javascript framework",
-  "main": "js/butterfly.js",
+  "main": [
+     "./css/butterfly.css",
+     "./js/butterfly.js"
+  ],
   "keywords": [
     "butterflyjs"
   ],
