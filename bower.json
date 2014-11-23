@@ -1,0 +1,21 @@
+{
+  "name": "butterflyjs",
+  "version": "1.0.6",
+  "homepage": "http://butterflyjs.com/",
+  "authors": [
+    "semir.babajic@gmail.com"
+  ],
+  "description": "Next generation Javascript framework",
+  "main": "js/butterfly.js",
+  "keywords": [
+    "butterflyjs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
