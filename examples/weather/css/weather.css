@@ -1,0 +1,32 @@
+body {
+    background: #8BA1AF;
+}
+
+h1, h2, p {
+    color: white;
+}
+
+input[type="text"], input[type="text"]:focus {
+    background: transparent;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 0;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#update {
+    width: 250px;
+}
+
+h2.weather {
+    padding-left: 100px;
+    position: relative;
+}
+
+h2.weather img {
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
