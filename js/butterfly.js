@@ -724,14 +724,18 @@ var Butterfly = function(element, options) {
 		 *
 		 * @return 	{boolean} Compiled template
 		 */
-		template: function template(content, context) {
+		template: function template(content, context, cache) {
 			var template = content,
 				fn = null,
 				compiled = null;
+				
+			cache = typeof cache === 'undefined' ? true : cache;
 
 			try {
 				// Execute templating function. TODO: Implement short term caching of compiled HTML
-				compiled = this.cache.read(template);
+				if (cache === true) {
+					compiled = this.cache.read(template);
+				}
 
 				// Nothing in cache, compile the template and cache
 				if (_.isNullOrEmpty(compiled)) {
@@ -749,8 +753,10 @@ var Butterfly = function(element, options) {
 					compiled = new Function("context", fn)(context);
 
 					// Store into cache
-					this.cache.store(template, compiled,
-						Butterfly.prototype.defaults.template_cache_duration);
+					if (cache === true) {
+						this.cache.store(template, compiled,
+							Butterfly.prototype.defaults.template_cache_duration);
+					}
 				}
 			} catch (e) {
 				throw new Error("Template compilation error, aborting.\n\r\n\r" +
