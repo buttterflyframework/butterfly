@@ -286,7 +286,10 @@ var Butterfly = function(element, options) {
 					if (!navigation.find(".touch-expand").length) {
 						navigation.find("li").first().append('<div class="touch-expand"></div>');
 						expanded = navigation.hasClass('expanded');
+
+						// Add mobile-view class to some elements
 						navigation.parents("header").addClass("mobile-view");
+						$("body").addClass("mobile-view");
 						navigation.addClass("mobile-view");
 
 						if (expanded === false) {
@@ -308,6 +311,7 @@ var Butterfly = function(element, options) {
 				} else {
 					navigation.parents("header").removeClass("mobile-view");
 					navigation.removeClass("mobile-view");
+					$("body").removeClass("mobile-view");
 					navigation.find("li").removeClass("block").show().attr("style", "");
 					navigation.find(".touch-expand").unbind().remove();
 				}
@@ -943,7 +947,6 @@ var Butterfly = function(element, options) {
 									object.destroy.call(object);
 								}
 							}
-
 						}
 
 						// Set current route
@@ -1094,7 +1097,7 @@ var Butterfly = function(element, options) {
 					type = data.attr('type');
 
 				// Change handler for text elements
-				if ((name === 'input' && type === 'text') || name === 'textarea') {
+				if ((name === 'input' && (type === 'text' || type === 'password')) || name === 'textarea') {
 					self.data = data.val();
 
 					data.bind("keydown", function() {
@@ -1526,7 +1529,8 @@ var Butterfly = function(element, options) {
 		// Call reinitialize function that can be called many times
 		init = Butterfly.prototype.reinitialize();
 
-		if (_.isFunction(Butterfly.prototype.runtime.callbacks['ready'].call(this))) {
+		if (_.notNullOrEmpty(Butterfly.prototype.runtime.callbacks['ready']) && 
+			_.isFunction(Butterfly.prototype.runtime.callbacks['ready'].call(this))) {
 			Butterfly.prototype.runtime.callbacks['ready'].call(this, init);
 		}
 	});
@@ -1543,6 +1547,10 @@ var Butterfly = function(element, options) {
 			tooltip: null,
 
 			_construct: function(butterfly) {
+				if (_.isNullOrEmpty(this.$element.attr("title"))) {
+					return;
+				}
+
 				var self = this,
 					templates = {
 						down: '<div class="tooltip align-center"><div class="caret-up"></div><div class="content">{0}</div></div>',
@@ -1583,19 +1591,19 @@ var Butterfly = function(element, options) {
 
 						switch (options.position) {
 							case "up":
-								self.tooltip.css("top", (elemPos.top - self.tooltip.outerHeight()) + "px");
+								self.tooltip.css("top", (elemPos.top - self.tooltip.outerHeight()) + options.positionAdjustment + "px");
 								self.tooltip.css("left", elemPos.left + centerX + "px");
 								break;
 							case "down":
 								self.tooltip.css("left", elemPos.left + centerX + "px");
-								self.tooltip.css("top", elemPos.top + self.$element.outerHeight() + "px");
+								self.tooltip.css("top", elemPos.top + self.$element.outerHeight() + options.positionAdjustment + "px");
 								break;
 							case "left":
-								self.tooltip.css("left", elemPos.left - self.tooltip.outerWidth() + "px");
+								self.tooltip.css("left", elemPos.left - self.tooltip.outerWidth() + options.positionAdjustment + "px");
 								self.tooltip.css("top", elemPos.top + centerY + "px");
 								break;
 							case "right":
-								self.tooltip.css("left", elemPos.left + self.$element.outerWidth() + "px");
+								self.tooltip.css("left", elemPos.left + self.$element.outerWidth() + options.positionAdjustment + "px");
 								self.tooltip.css("top", elemPos.top + centerY + "px");
 								// Now a fix for something that can't be easily done via regular CSS
 								var

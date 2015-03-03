@@ -141,3 +141,21 @@ select {
         }
     }
 }
+
+.input-group {
+    position: relative;
+    border-collapse: separate;
+    display: table;
+
+    input[type="text"] {
+        position: relative;
+        float: left;
+        width: 100%;
+        display: table-cell;
+    }
+
+    .block-element {
+        width: 1%;
+        display: table-cell;
+    }
+}
